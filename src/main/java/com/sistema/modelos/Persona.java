@@ -8,15 +8,18 @@ public class Persona {
     private String nombre;
     private String apellido;
     
+    //Constructor vacio
     public Persona (){
     }
     
+     //Constructor con parametros
     public Persona(String id, String nombre, String apellido){
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
     }
-    
+     
+    //Metodos getter y sette
     public String getId(){
         return id;
     }
