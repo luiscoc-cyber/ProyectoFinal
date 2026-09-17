@@ -1,13 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+//Autor: luis
 package com.sistema.modelos;
 
-/**
- *
- * @author CompuFire
- */
-public class Profesor {
-    
+public class Profesor extends Persona {
+
+    //Constructor vacio
+    public Profesor (){
+        super();
+    }
+
+    //Constructor con parametros
+    public Profesor (String id, String nombre, String apellido){
+        super(id, nombre, apellido);
+    }
+
+    //Metodos getter y setter
+    public String getIdProfesor(){
+        return getId();
+    }
+
+    public void setIdProfesor (String idProfesor){
+        setId(idProfesor);
+    }
+
+    @Override
+    public String toString(){
+        return getId() + " | " + getNombre() + " | " + getApellido();
+    }
 }
