@@ -67,7 +67,7 @@ public class Asistencia {
     
     @Override
     public String toString(){
-        return idAsistencia + " | " + carnetEstudiante + " | " + codigoCurso + " | " + fecha + " | " + estado;  
+        return idAsistencia + "|" + carnetEstudiante + "|" + codigoCurso + "|" + fecha + "|" + estado;  
     }
     
 }

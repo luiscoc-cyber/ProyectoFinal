@@ -19,13 +19,16 @@ public class Persona {
         this.apellido = apellido;
     }
      
-    //Metodos getter y sette
+    //Metodos getter y setter
     public String getId(){
         return id;
     }
     
     public void setId(String id){
-        this.id = id;
+        if (id == null || id.trim().isEmpty()){
+            throw new IllegalArgumentException("Error: El ID no puede estar vacio");
+        }
+        this.id = id.trim();
     }
     
     public String getNombre(){
@@ -46,6 +49,6 @@ public class Persona {
     
     @Override
     public String toString(){
-        return id + " | " + nombre + " | " + apellido;
+        return id + "|" + nombre + "|" + apellido;
     }
 }
