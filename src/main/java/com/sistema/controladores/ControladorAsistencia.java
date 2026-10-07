@@ -12,7 +12,8 @@ import java.util.List;
  * @author CompuFire
  */
 public class ControladorAsistencia {
-      private final AsistenciaDatos asistenciaDatos;
+     
+    private final AsistenciaDatos asistenciaDatos;
 
     public ControladorAsistencia() {
         this.asistenciaDatos = new AsistenciaDatos();
@@ -26,13 +27,6 @@ public class ControladorAsistencia {
             fecha == null || fecha.trim().isEmpty() ||
             estado == null || estado.trim().isEmpty()) {
             
-            System.err.println("[ControladorAsistencia] Todos los campos son obligatorios.");
-            return false;
-        }
-
-        // Validación de duplicados por ID de asistencia
-        if (buscarAsistencia(idAsistencia) != null) {
-            System.err.println("[ControladorAsistencia] El ID de la asistencia ya existe.");
             return false;
         }
 
@@ -44,6 +38,7 @@ public class ControladorAsistencia {
             estado.trim()
         );
 
+        // asistenciaDatos.guardar ya valida si el ID existe y retorna false si es duplicado
         return asistenciaDatos.guardar(nueva);
     }
 
@@ -60,11 +55,17 @@ public class ControladorAsistencia {
         return asistenciaDatos.buscarPorId(idAsistencia.trim());
     }
 
-    // 4. Modificar registro de asistencia existente
+    // 4. Modificar registro de asistencia existente (con validación de nulos completa)
     public boolean modificarAsistencia(String idAsistencia, String carnet, String codigoCurso, String fecha, String estado) {
-        if (idAsistencia == null || idAsistencia.trim().isEmpty()) {
+        if (idAsistencia == null || idAsistencia.trim().isEmpty() ||
+            carnet == null || carnet.trim().isEmpty() ||
+            codigoCurso == null || codigoCurso.trim().isEmpty() ||
+            fecha == null || fecha.trim().isEmpty() ||
+            estado == null || estado.trim().isEmpty()) {
+            
             return false;
         }
+
         Asistencia asistencia = new Asistencia(
             idAsistencia.trim(),
             carnet.trim(),
@@ -82,5 +83,4 @@ public class ControladorAsistencia {
         }
         return asistenciaDatos.eliminar(idAsistencia.trim());
     }
-    
 }

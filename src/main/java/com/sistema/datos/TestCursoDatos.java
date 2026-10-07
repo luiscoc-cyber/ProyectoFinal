@@ -1,50 +1,53 @@
 package com.sistema.datos;
 
-import com.sistema.datos.CursoDatos;
 import com.sistema.modelos.Curso;
-import java.util.List;
 
 public class TestCursoDatos {
 
     public static void main(String[] args) {
-        System.out.println("--- INICIANDO PRUEBAS DE CURSO DATOS ---");
+        System.out.println("======= INICIANDO PRUEBAS DE CURSODATOS ========");
 
         CursoDatos cursoDatos = new CursoDatos();
 
         // 1. Probando guardar
         System.out.println("\n1. Probando guardar...");
-        Curso c1 = new Curso("CC101", "Programacion I");
-        Curso c2 = new Curso("CC102", "Fisica I");
+        Curso c1 = new Curso("C001", "Programación I");
+        Curso c2 = new Curso("C002", "Bases de Datos");
 
-        System.out.println("Guardando Programacion I: " + cursoDatos.guardar(c1));
-        System.out.println("Guardando Fisica I: " + cursoDatos.guardar(c2));
-        System.out.println("Intentando guardar duplicado CC101: " + cursoDatos.guardar(c1));
+        System.out.println("Guardando C001: " + cursoDatos.guardar(c1));
+        System.out.println("Guardando C002: " + cursoDatos.guardar(c2));
+        
+        // Intentar guardar un duplicado
+        System.out.println("Intentando guardar duplicado C001: " + cursoDatos.guardar(c1));
 
         // 2. Probando obtenerTodos
         System.out.println("\n2. Probando obtenerTodos...");
-        List<Curso> cursos = cursoDatos.obtenerTodos();
-        for (Curso c : cursos) {
-            System.out.println("Encontrado: " + c);
+        for (Curso c : cursoDatos.obtenerTodos()) {
+            System.out.println("Encontrado: " + c.getCodigoCurso() + " | " + c.getNombreCurso());
         }
 
         // 3. Probando buscarPorCodigo
         System.out.println("\n3. Probando buscarPorCodigo...");
-        Curso buscado = cursoDatos.buscarPorCodigo("CC101");
-        System.out.println("Buscado CC101: " + (buscado != null ? buscado.getNombreCurso() : "No encontrado"));
+        Curso buscado = cursoDatos.buscarPorCodigo("C001");
+        if (buscado != null) {
+            System.out.println("Buscado C001: " + buscado.getNombreCurso());
+        } else {
+            System.out.println("Buscado C001: No encontrado");
+        }
 
         // 4. Probando actualizar
         System.out.println("\n4. Probando actualizar...");
-        Curso cModificado = new Curso("CC101", "Programacion I (Avanzada)");
-        System.out.println("Actualizando CC101: " + cursoDatos.actualizar(cModificado));
+        Curso modificado = new Curso("C001", "Programación Avanzada");
+        System.out.println("Actualizando C001 a " + modificado.getNombreCurso() + ": " + cursoDatos.actualizar(modificado));
 
         // 5. Probando eliminar
         System.out.println("\n5. Probando eliminar...");
-        System.out.println("Eliminando CC102: " + cursoDatos.eliminar("CC102"));
+        System.out.println("Eliminando C002: " + cursoDatos.eliminar("C002"));
 
-        // 6. Estado final
+        // 6. Estado final del archivo
         System.out.println("\n6. Estado final del archivo:");
         for (Curso c : cursoDatos.obtenerTodos()) {
-            System.out.println(c);
+            System.out.println(c.getCodigoCurso() + " | " + c.getNombreCurso());
         }
 
         System.out.println("\n--- PRUEBAS FINALIZADAS ---");

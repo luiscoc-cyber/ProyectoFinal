@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.sistema.controladores;
+
 import com.sistema.datos.CursoDatos;
 import com.sistema.modelos.Curso;
 import java.util.List;
@@ -11,26 +12,20 @@ import java.util.List;
  * @author CompuFire
  */
 public class ControladorCurso {
-    private final CursoDatos cursoDatos;
+   private final CursoDatos cursoDatos;
 
-    public ControladorCurso(){
+    public ControladorCurso() {
         this.cursoDatos = new CursoDatos();
     }
 
     // 1. Registrar
     public boolean registrarCurso(String codigo, String nombre) {
         if (codigo == null || codigo.trim().isEmpty() || nombre == null || nombre.trim().isEmpty()) {
-            System.err.println("[ControladorCurso] Código y nombre son obligatorios.");
-            return false;
-        }
-
-        // Validación de duplicados
-        if (buscarCurso(codigo) != null) {
-            System.err.println("[ControladorCurso] El código del curso ya existe.");
             return false;
         }
 
         Curso nuevo = new Curso(codigo.trim(), nombre.trim());
+        // cursoDatos.guardar ya valida si el código existe y retorna false si es duplicado
         return cursoDatos.guardar(nuevo);
     }
 

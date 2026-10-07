@@ -7,11 +7,15 @@ import com.sistema.modelos.Asistencia;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  *
@@ -37,23 +41,33 @@ public class AsistenciaDatos {
             try {
                 archivo.createNewFile();
             } catch (IOException e) {
-                System.out.println("Error al crear el archivo de asistencias: " + e.getMessage());
+                System.err.println("Error al crear el archivo de asistencias: " + e.getMessage());
             }
         }
     }
 
     // Guardar (Formato: idAsistencia|carnetEstudiante|codigoCurso|fecha|estado)
     public boolean guardar(Asistencia asistencia) {
-        if (asistencia == null || asistencia.getIdAsistencia() == null) {
+        // Validación estricta de nulos para evitar NullPointerException al hacer .trim()
+        if (asistencia == null 
+                || asistencia.getIdAsistencia() == null 
+                || asistencia.getCarnetEstudiante() == null 
+                || asistencia.getCodigoCurso() == null 
+                || asistencia.getFecha() == null 
+                || asistencia.getEstado() == null) {
+            System.err.println("Error: Todos los campos de la asistencia son obligatorios.");
             return false;
         }
 
         if (buscarPorId(asistencia.getIdAsistencia()) != null) {
-            System.out.println("Error: Ya existe una asistencia con el ID " + asistencia.getIdAsistencia());
+            System.err.println("Error: Ya existe una asistencia con el ID " + asistencia.getIdAsistencia());
             return false;
         }
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(RUTA_ARCHIVO, true))) {
+        // Escritura forzando codificación UTF-8
+        try (BufferedWriter bw = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, true), StandardCharsets.UTF_8))) {
+            
             String linea = asistencia.getIdAsistencia().trim() + "|"
                     + asistencia.getCarnetEstudiante().trim() + "|"
                     + asistencia.getCodigoCurso().trim() + "|"
@@ -63,7 +77,7 @@ public class AsistenciaDatos {
             bw.newLine();
             return true;
         } catch (IOException e) {
-            System.out.println("Error al guardar asistencia: " + e.getMessage());
+            System.err.println("Error al guardar asistencia: " + e.getMessage());
             return false;
         }
     }
@@ -77,7 +91,10 @@ public class AsistenciaDatos {
             return asistencias;
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_ARCHIVO))) {
+        // Lectura forzando codificación UTF-8
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(new FileInputStream(RUTA_ARCHIVO), StandardCharsets.UTF_8))) {
+            
             String linea;
             while ((linea = br.readLine()) != null) {
                 if (linea.trim().isEmpty()) {
@@ -97,7 +114,7 @@ public class AsistenciaDatos {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error al leer asistencias: " + e.getMessage());
+            System.err.println("Error al leer asistencias: " + e.getMessage());
         }
 
         return asistencias;
@@ -105,7 +122,7 @@ public class AsistenciaDatos {
 
     // Buscar por ID de Asistencia
     public Asistencia buscarPorId(String idAsistencia) {
-        if (idAsistencia == null) return null;
+        if (idAsistencia == null || idAsistencia.trim().isEmpty()) return null;
         List<Asistencia> asistencias = obtenerTodos();
         for (Asistencia a : asistencias) {
             if (a.getIdAsistencia().trim().equalsIgnoreCase(idAsistencia.trim())) {
@@ -136,12 +153,12 @@ public class AsistenciaDatos {
             return false;
         }
 
-        return guardarListaCompleta(asistencias);
+        return guardarTodos(asistencias);
     }
 
     // Eliminar
     public boolean eliminar(String idAsistencia) {
-        if (idAsistencia == null) return false;
+        if (idAsistencia == null || idAsistencia.trim().isEmpty()) return false;
         List<Asistencia> asistencias = obtenerTodos();
         boolean eliminado = asistencias.removeIf(a -> a.getIdAsistencia().trim().equalsIgnoreCase(idAsistencia.trim()));
 
@@ -149,12 +166,14 @@ public class AsistenciaDatos {
             return false;
         }
 
-        return guardarListaCompleta(asistencias);
+        return guardarTodos(asistencias);
     }
 
-    // Método auxiliar para reescribir el archivo completo
-    private boolean guardarListaCompleta(List<Asistencia> asistencias) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(RUTA_ARCHIVO, false))) {
+    // Método auxiliar para reescribir el archivo completo con UTF-8
+    private boolean guardarTodos(List<Asistencia> asistencias) {
+        try (BufferedWriter bw = new BufferedWriter(
+                new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, false), StandardCharsets.UTF_8))) {
+            
             for (Asistencia a : asistencias) {
                 String linea = a.getIdAsistencia().trim() + "|"
                         + a.getCarnetEstudiante().trim() + "|"
@@ -166,9 +185,8 @@ public class AsistenciaDatos {
             }
             return true;
         } catch (IOException e) {
-            System.out.println("Error al reescribir archivo de asistencias: " + e.getMessage());
+            System.err.println("Error al reescribir archivo de asistencias: " + e.getMessage());
             return false;
         }
     }
-    
 }
