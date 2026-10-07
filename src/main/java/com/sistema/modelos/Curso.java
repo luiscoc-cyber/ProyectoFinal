@@ -37,6 +37,6 @@ public class Curso {
     //Formato de salida
     @Override
     public String toString(){
-        return codigoCurso + " | " + nombreCurso;
+        return codigoCurso + "|" + nombreCurso;
     }
 }

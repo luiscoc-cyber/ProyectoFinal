@@ -13,7 +13,8 @@ public class Estudiante extends Persona {
         super(id, nombre, apellido);
     }
     
-    //Metods getter u setter para trabajar con carnet
+    //Metodos getter u setter para trabajar con carnet
+    //El carnet es el identificador unico de un estudiante por lo que reutilizaremos el Id de persona
     public String getCarnet(){
         return getId();
     }
@@ -24,7 +25,7 @@ public class Estudiante extends Persona {
     
     @Override
     public String toString(){
-        return getId() + " | " + getNombre() + " | " + getApellido();
+        return getId() + "|" + getNombre() + "|" + getApellido();
     }
     
 }

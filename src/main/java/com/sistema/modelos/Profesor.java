@@ -1,4 +1,4 @@
-//Autor: luis
+    //Autor: luis
 package com.sistema.modelos;
 
 public class Profesor extends Persona {
@@ -24,6 +24,6 @@ public class Profesor extends Persona {
 
     @Override
     public String toString(){
-        return getId() + " | " + getNombre() + " | " + getApellido();
+        return getId() + "|" + getNombre() + "|" + getApellido();
     }
 }
