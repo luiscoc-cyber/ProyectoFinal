@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CursoDatos {
 
-   private final String RUTA_ARCHIVO = "archivos/cursos.txt";
+    private static final String RUTA_ARCHIVO = "archivos/cursos.txt";
 
     public CursoDatos() {
         crearArchivoSiNoExiste();
@@ -38,7 +38,7 @@ public class CursoDatos {
             try {
                 archivo.createNewFile();
             } catch (IOException e) {
-                System.err.println("Error al crear el archivo de cursos: " + e.getMessage());
+                System.err.println(" [CursoDatos] Error al crear el archivo de cursos: " + e.getMessage());
             }
         }
     }
@@ -47,25 +47,25 @@ public class CursoDatos {
     public boolean guardar(Curso curso) {
         // Validación estricta para evitar NullPointerException al llamar a .trim()
         if (curso == null || curso.getCodigoCurso() == null || curso.getNombreCurso() == null) {
-            System.err.println("Error: El curso y sus atributos no pueden ser nulos.");
+            System.err.println("[CursoDatos] El curso y sus atributos no pueden ser nulos.");
             return false;
         }
 
         if (buscarPorCodigo(curso.getCodigoCurso()) != null) {
-            System.err.println("Error: Ya existe un curso con el código " + curso.getCodigoCurso());
+            System.err.println("[CursoDatos] Ya existe un curso con el código " + curso.getCodigoCurso());
             return false;
         }
 
         // Escritura forzando codificación UTF-8
         try (BufferedWriter bw = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, true), StandardCharsets.UTF_8))) {
-            
+
             String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim();
             bw.write(linea);
             bw.newLine();
             return true;
         } catch (IOException e) {
-            System.err.println("Error al guardar curso: " + e.getMessage());
+            System.err.println("[CursoDatos] Error al guardar curso: " + e.getMessage());
             return false;
         }
     }
@@ -82,7 +82,7 @@ public class CursoDatos {
         // Lectura forzando codificación UTF-8
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new FileInputStream(RUTA_ARCHIVO), StandardCharsets.UTF_8))) {
-            
+
             String linea;
             while ((linea = br.readLine()) != null) {
                 if (linea.trim().isEmpty()) {
@@ -106,7 +106,9 @@ public class CursoDatos {
 
     // Buscar por Código de curso
     public Curso buscarPorCodigo(String codigoCurso) {
-        if (codigoCurso == null || codigoCurso.trim().isEmpty()) return null;
+        if (codigoCurso == null || codigoCurso.trim().isEmpty()) {
+            return null;
+        }
         List<Curso> cursos = obtenerTodos();
         for (Curso curso : cursos) {
             if (curso.getCodigoCurso().trim().equalsIgnoreCase(codigoCurso.trim())) {
@@ -142,7 +144,9 @@ public class CursoDatos {
 
     // Eliminar curso
     public boolean eliminar(String codigoCurso) {
-        if (codigoCurso == null || codigoCurso.trim().isEmpty()) return false;
+        if (codigoCurso == null || codigoCurso.trim().isEmpty()) {
+            return false;
+        }
         List<Curso> cursos = obtenerTodos();
         boolean eliminado = cursos.removeIf(c -> c.getCodigoCurso().trim().equalsIgnoreCase(codigoCurso.trim()));
 
@@ -157,7 +161,7 @@ public class CursoDatos {
     private boolean guardarTodos(List<Curso> cursos) {
         try (BufferedWriter bw = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, false), StandardCharsets.UTF_8))) {
-            
+
             for (Curso curso : cursos) {
                 String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim();
                 bw.write(linea);
@@ -165,7 +169,7 @@ public class CursoDatos {
             }
             return true;
         } catch (IOException e) {
-            System.err.println("Error al reescribir archivo de cursos: " + e.getMessage());
+            System.err.println("[CursoDatos] Error al reescribir archivo de cursos: " + e.getMessage());
             return false;
         }
     }
