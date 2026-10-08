@@ -1,55 +1,64 @@
-//Autor: Luis
-    package com.sistema.controladores;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.sistema.controladores;
 
 import com.sistema.datos.EstudianteDatos;
 import com.sistema.modelos.Estudiante;
 import java.util.List;
-
+/**
+ *
+ * @author CompuFire
+ */
 public class ControladorEstudiante {
     
-    private final EstudianteDatos estudianteDatos;
-    
-    public ControladorEstudiante(){
+     private final EstudianteDatos estudianteDatos;
+
+    public ControladorEstudiante() {
         this.estudianteDatos = new EstudianteDatos();
     }
-    
-    //Registrar un nuevo estudiante
-    public boolean registrarEstudiante(String carnet, String nombre, String apellido){
+
+    // 1. Registrar un nuevo estudiante
+    public boolean registrarEstudiante(String carnet, String nombre, String apellido) {
+        // Validación de campos obligatorios
         if (carnet == null || carnet.trim().isEmpty() ||
             nombre == null || nombre.trim().isEmpty() ||
             apellido == null || apellido.trim().isEmpty()) {
-        
-            System.err.println("[ControladorEstudiante] todos los campos son obligatorios.");
+            
+            System.err.println("[ControladorEstudiante] Todos los campos son obligatorios.");
             return false;
         }
-        
-        //Validacion de duplicados por carnet
-        if (buscarEstudiante(carnet) != null){
+
+        // Validación de duplicados por carnet
+        if (buscarEstudiante(carnet) != null) {
             System.err.println("[ControladorEstudiante] Ya existe un estudiante con el carnet " + carnet);
             return false;
         }
-        
+
         Estudiante nuevo = new Estudiante(
             carnet.trim(),
             nombre.trim(),
-            apellido.trim());
+            apellido.trim()
+        );
+
         return estudianteDatos.guardar(nuevo);
     }
-    
-    //Listar todos los estudiantes
+
+    // 2. Listar todos los estudiantes
     public List<Estudiante> listarEstudiantes() {
         return estudianteDatos.obtenerTodos();
     }
-    
-    //Buscar estudiante por carnet
+
+    // 3. Buscar estudiante por carnet
     public Estudiante buscarEstudiante(String carnet) {
         if (carnet == null || carnet.trim().isEmpty()) {
             return null;
         }
         return estudianteDatos.buscarPorCarnet(carnet.trim());
     }
-    
-    //Modificar datos de un estudiante existente
+
+    // 4. Modificar datos de un estudiante existente
     public boolean modificarEstudiante(String carnet, String nombre, String apellido) {
         // Validación de campos obligatorios
         if (carnet == null || carnet.trim().isEmpty() ||
@@ -65,7 +74,8 @@ public class ControladorEstudiante {
             System.err.println("[ControladorEstudiante] No se encontró el estudiante con carnet " + carnet);
             return false;
         }
-         Estudiante modificado = new Estudiante(
+
+        Estudiante modificado = new Estudiante(
             carnet.trim(),
             nombre.trim(),
             apellido.trim()
@@ -74,12 +84,12 @@ public class ControladorEstudiante {
         return estudianteDatos.actualizar(modificado);
     }
 
-    //Eliminar estudiante por carnet
+    // 5. Eliminar estudiante por carnet
     public boolean eliminarEstudiante(String carnet) {
         if (carnet == null || carnet.trim().isEmpty()) {
             return false;
         }
         return estudianteDatos.eliminar(carnet.trim());
     }
-   
+    
 }
