@@ -24,7 +24,7 @@ public class ControladorAsistencia {
         this.controladorEstudiante = new ControladorEstudiante();
     }
 
-    // 1. Registrar asistencia validando la existencia del estudiante y del curso
+    // 1. Registrar nueva asistencia validando la existencia del estudiante y del curso
     public boolean registrarAsistencia(String idAsistencia, String carnet, String codigoCurso, String fecha, String estado) {
         // Validación de campos nulos o vacíos
         if (idAsistencia == null || idAsistencia.trim().isEmpty() ||
@@ -32,17 +32,23 @@ public class ControladorAsistencia {
             codigoCurso == null || codigoCurso.trim().isEmpty() ||
             fecha == null || fecha.trim().isEmpty() ||
             estado == null || estado.trim().isEmpty()) {
-            
+            System.out.println("[ControladorAsistencia] Todos los campos son obligatorios para poder guardar ");
+            return false;
+        }
+        
+          // Validación de duplicados por ID de asistencia
+        if (buscarAsistencia(idAsistencia) != null) {
+            System.err.println("[ControladorAsistencia] Ya existe una asistencia con el ID " + idAsistencia);
             return false;
         }
 
-        // VALIDACIÓN RELACIONAL 1: El estudiante debe existir
+        // Validacion de que el estudiante si existe 
         if (controladorEstudiante.buscarEstudiante(carnet.trim()) == null) {
             System.err.println("[ControladorAsistencia] Error: El carné " + carnet + " no existe.");
             return false;
         }
 
-        // VALIDACIÓN RELACIONAL 2: El curso debe existir
+        // Validacion de que el curso si existe
         if (controladorCurso.buscarCurso(codigoCurso.trim()) == null) {
             System.err.println("[ControladorAsistencia] Error: El curso " + codigoCurso + " no existe.");
             return false;
@@ -59,7 +65,7 @@ public class ControladorAsistencia {
         return asistenciaDatos.guardar(nueva);
     }
 
-    // 2. Listar todas las asistencias
+    // 2. Listado de todas las asistencias
     public List<Asistencia> listarAsistencias() {
         return asistenciaDatos.obtenerTodos();
     }
@@ -67,6 +73,7 @@ public class ControladorAsistencia {
     // 3. Buscar asistencia por ID
     public Asistencia buscarAsistencia(String idAsistencia) {
         if (idAsistencia == null || idAsistencia.trim().isEmpty()) {
+            System.out.println("[ControladorAsistencia] El ID de busqueda esta vacio");
             return null;
         }
         return asistenciaDatos.buscarPorId(idAsistencia.trim());
@@ -79,15 +86,27 @@ public class ControladorAsistencia {
             codigoCurso == null || codigoCurso.trim().isEmpty() ||
             fecha == null || fecha.trim().isEmpty() ||
             estado == null || estado.trim().isEmpty()) {
+            System.out.println("[ControladorAsistencia]  Todos los campos son obligatorios para poder guardar");
+            return false;
+        }
+        
+         // Verificar que la asistencia sí exista antes de modificar
+        if (buscarAsistencia(idAsistencia) == null) {
+            System.err.println("[ControladorAsistencia] No se encontró la asistencia con ID " + idAsistencia);
             return false;
         }
 
-        // Verificar existencia relacional
-        if (controladorEstudiante.buscarEstudiante(carnet.trim()) == null ||
-            controladorCurso.buscarCurso(codigoCurso.trim()) == null) {
+         // Verificar existencia relacional de estudiantea modificar 
+        if (controladorEstudiante.buscarEstudiante(carnet.trim()) == null) {
+            System.err.println("[ControladorAsistencia] Error: El estudiante con carné " + carnet + " no existe.");
             return false;
         }
 
+        // Verificar existencia relacional de curso a modificar 
+        if (controladorCurso.buscarCurso(codigoCurso.trim()) == null) {
+            System.err.println("[ControladorAsistencia] Error: El curso con código " + codigoCurso + " no existe.");
+            return false;
+        }
         Asistencia asistencia = new Asistencia(
             idAsistencia.trim(),
             carnet.trim(),
@@ -101,6 +120,7 @@ public class ControladorAsistencia {
     // 5. Eliminar registro por ID
     public boolean eliminarAsistencia(String idAsistencia) {
         if (idAsistencia == null || idAsistencia.trim().isEmpty()) {
+            System.out.println("[ControladorAsistencia] Necesita colocar el ID para poder eliminar la asistencia");
             return false;
         }
         return asistenciaDatos.eliminar(idAsistencia.trim());
