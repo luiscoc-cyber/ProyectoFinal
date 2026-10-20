@@ -76,8 +76,8 @@ public class ProfesorDatos{
             while ((linea = br.readLine()) !=null){
                 if (!linea.trim().isEmpty()){
                     String[] datos = linea.split("\\|");
-                    if (datos.length >=3){
-                        Profesor est = new Profesor(datos[0].trim(), datos[1].trim(), datos[2].trim());
+                    if (datos.length >=4){
+                        Profesor est = new Profesor(datos[0].trim(), datos[1].trim(), datos[2].trim(), datos[3].trim());
                         lista.add(est);
                     }
                 }
