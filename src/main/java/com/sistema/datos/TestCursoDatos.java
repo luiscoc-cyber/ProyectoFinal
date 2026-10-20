@@ -11,8 +11,8 @@ public class TestCursoDatos {
 
         // 1. Probando guardar
         System.out.println("\n1. Probando guardar...");
-        Curso c1 = new Curso("C001", "Programación I");
-        Curso c2 = new Curso("C002", "Bases de Datos");
+        Curso c1 = new Curso("C001", "Programación I", "p001");
+        Curso c2 = new Curso("C002", "Bases de Datos", "p002");
 
         System.out.println("Guardando C001: " + cursoDatos.guardar(c1));
         System.out.println("Guardando C002: " + cursoDatos.guardar(c2));
@@ -37,7 +37,7 @@ public class TestCursoDatos {
 
         // 4. Probando actualizar
         System.out.println("\n4. Probando actualizar...");
-        Curso modificado = new Curso("C001", "Programación Avanzada");
+        Curso modificado = new Curso("C001", "Programación Avanzada", "p001");
         System.out.println("Actualizando C001 a " + modificado.getNombreCurso() + ": " + cursoDatos.actualizar(modificado));
 
         // 5. Probando eliminar
