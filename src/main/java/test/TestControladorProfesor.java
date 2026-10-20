@@ -13,17 +13,17 @@ public class TestControladorProfesor {
         
         // 1. Validación de campos vacíos
         System.out.println("\n1. Probando registrar con campos vacíos (debe dar error):");
-        boolean resultadoVacio = controlador.registrarProfesor("", "Carlos", "Ruiz");
+        boolean resultadoVacio = controlador.registrarProfesor("", "Carlos", "Ruiz", "123");
         System.out.println("Resultado (debe ser false): " + resultadoVacio);
         
         // 2. Registro exitoso
         System.out.println("\n2. Probando registrar un profesor válido:");
-        boolean registrado = controlador.registrarProfesor("P001", "Carlos", "Ruiz");
+        boolean registrado = controlador.registrarProfesor("P001", "Carlos", "Ruiz", "123");
         System.out.println("Resultado (debe ser true): " + registrado);
         
         // 3. Duplicado
         System.out.println("\n3. Probando registrar el mismo ID (debe dar error):");
-        boolean duplicado = controlador.registrarProfesor("P001", "Otro", "Nombre");
+        boolean duplicado = controlador.registrarProfesor("P001", "Otro", "Nombre", "123");
         System.out.println("Resultado (debe ser false): " + duplicado);
         
         // 4. Búsqueda
@@ -35,7 +35,7 @@ public class TestControladorProfesor {
         
         // 5. Modificación
         System.out.println("\n5. Probando modificar profesor:");
-        boolean modificado = controlador.modificarProfesor("P001", "Carlos Alberto", "Ruiz Lopez");
+        boolean modificado = controlador.modificarProfesor("P001", "Carlos Alberto", "Ruiz Lopez", "321");
         System.out.println("Resultado (debe ser true): " + modificado);
         
         // 6. Verificación de modificación
