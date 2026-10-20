@@ -14,11 +14,12 @@ public class ControladorProfesor {
     }
 
     // 1. Registrar un nuevo profesor
-    public boolean registrarProfesor(String idProfesor, String nombre, String apellido) {
+    public boolean registrarProfesor(String idProfesor, String nombre, String apellido, String password) {
         // Validación de campos obligatorios
         if (idProfesor == null || idProfesor.trim().isEmpty() ||
             nombre == null || nombre.trim().isEmpty() ||
-            apellido == null || apellido.trim().isEmpty()) {
+            apellido == null || apellido.trim().isEmpty() ||
+            password == null || password.trim().isEmpty()) {
             
             System.err.println("[ControladorProfesor] Todos los campos son obligatorios.");
             return false;
@@ -33,7 +34,8 @@ public class ControladorProfesor {
         Profesor nuevo = new Profesor(
             idProfesor.trim(),
             nombre.trim(),
-            apellido.trim()
+            apellido.trim(),
+            password.trim()
         );
 
         return profesorDatos.guardar(nuevo);
@@ -53,7 +55,7 @@ public class ControladorProfesor {
     }
 
     // 4. Modificar datos de un profesor existente
-    public boolean modificarProfesor(String idProfesor, String nombre, String apellido) {
+    public boolean modificarProfesor(String idProfesor, String nombre, String apellido, String password) {
         // Validación de campos obligatorios
         if (idProfesor == null || idProfesor.trim().isEmpty() ||
             nombre == null || nombre.trim().isEmpty() ||
@@ -72,7 +74,8 @@ public class ControladorProfesor {
         Profesor modificado = new Profesor(
             idProfesor.trim(),
             nombre.trim(),
-            apellido.trim()
+            apellido.trim(),
+            password.trim()
         );
 
         return profesorDatos.actualizar(modificado);

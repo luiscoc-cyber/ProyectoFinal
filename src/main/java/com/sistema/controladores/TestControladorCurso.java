@@ -18,7 +18,7 @@ public class TestControladorCurso {
 
         // 1. Probar registro de un nuevo curso
         System.out.println("\n--- 1. Registrando un curso ---");
-        boolean registrado = controlador.registrarCurso("CC103", "Algoritmos");
+        boolean registrado = controlador.registrarCurso("CC103", "Algoritmos", "p003");
         System.out.println("¿Curso registrado exitosamente?: " + registrado);
 
         // 2. Probar listar todos los cursos

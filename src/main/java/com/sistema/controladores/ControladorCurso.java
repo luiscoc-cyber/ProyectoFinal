@@ -21,8 +21,8 @@ public class ControladorCurso {
     }
 
     // 1. Registrar nuevo curso 
-public boolean registrarCurso(String codigo, String nombre) {
-    if (codigo == null || codigo.trim().isEmpty() || nombre == null || nombre.trim().isEmpty()) {
+public boolean registrarCurso(String codigo, String nombre, String idProfesor) {
+    if (codigo == null || codigo.trim().isEmpty() || nombre == null || nombre.trim().isEmpty() || idProfesor == null || idProfesor.trim().isEmpty()) {
         System.err.println("[ControladorCurso] Todos los campos son obligatorios para poder guardar");
         return false;
     }
@@ -34,7 +34,7 @@ public boolean registrarCurso(String codigo, String nombre) {
     }
 
     // Guarda el nuevo curso sin duplicado
-    Curso nuevo = new Curso(codigo.trim(), nombre.trim());
+    Curso nuevo = new Curso(codigo.trim(), nombre.trim(), idProfesor.trim());
     return cursoDatos.guardar(nuevo);
 }
 
@@ -52,8 +52,8 @@ public boolean registrarCurso(String codigo, String nombre) {
     }
 
     // 4. Modificar curso 
-    public boolean modificarCurso(String codigo, String nuevoNombre) {
-        if (codigo == null || codigo.trim().isEmpty() || nuevoNombre == null || nuevoNombre.trim().isEmpty()) {
+    public boolean modificarCurso(String codigo, String nuevoNombre, String idProfesor) {
+        if (codigo == null || codigo.trim().isEmpty() || nuevoNombre == null || nuevoNombre.trim().isEmpty() || idProfesor == null || idProfesor.trim().isEmpty()) {
             System.out.println("[ControladorCurso] Es necesario llenar todos los campos para poder modificar");
             return false;
         }
@@ -64,11 +64,11 @@ public boolean registrarCurso(String codigo, String nombre) {
             return false;
         }
 
-        Curso curso = new Curso(codigo.trim(), nuevoNombre.trim());
+        Curso curso = new Curso(codigo.trim(), nuevoNombre.trim(), idProfesor.trim());
         return cursoDatos.actualizar(curso);
     }
 
-    // 5. Eliminar curso por codigo 
+    // 5. Eliminar curso por codigo     
     public boolean eliminarCurso(String codigo) {
         if (codigo == null || codigo.trim().isEmpty()) {
             System.out.println("[ControladorCurso] No se puede eliminar el curso sin su codigo");
