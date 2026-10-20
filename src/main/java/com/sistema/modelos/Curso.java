@@ -6,15 +6,17 @@ public class Curso {
     //Declaracion de atributos
     private String codigoCurso;
     private String nombreCurso;
+    private String idProfesor;
     
     //Constructor vacio
     public Curso(){
     }
     
     //Constructor con parametros
-    public Curso(String codigoCurso, String nombreCurso) {
+    public Curso(String codigoCurso, String nombreCurso, String idProfesor) {
         this.codigoCurso = codigoCurso;
         this.nombreCurso = nombreCurso;
+        this.idProfesor = idProfesor;
     }
     
     //Metodos getter y setter
@@ -33,10 +35,18 @@ public class Curso {
     public void setNombreCurso(String nombreCurso){
         this.nombreCurso = nombreCurso;
     }
+    
+    public String getIdProfesor(){
+        return idProfesor;
+    }
+    
+    public void setIdProfesor(String idProfesor){
+        this.idProfesor = idProfesor;
+    }
  
     //Formato de salida
     @Override
     public String toString(){
-        return codigoCurso + "|" + nombreCurso;
+        return codigoCurso + "|" + nombreCurso + "|" + idProfesor;
     }
 }
