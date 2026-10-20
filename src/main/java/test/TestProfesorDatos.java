@@ -11,8 +11,8 @@ public class TestProfesorDatos {
         
         // 1. PRUEBA GUARDAR
         System.out.println("\n1. Probando guardar...");
-        Profesor p1 = new Profesor("P001", "Carlos", "Ruiz");
-        Profesor p2 = new Profesor("P002", "Ana", "Martínez");
+        Profesor p1 = new Profesor("P001", "Carlos", "Ruiz", "123");
+        Profesor p2 = new Profesor("P002", "Ana", "Martínez", "321");
         
         System.out.println("Guardando a Carlos: " + datos.guardar(p1));
         System.out.println("Guardando a Ana: " + datos.guardar(p2));

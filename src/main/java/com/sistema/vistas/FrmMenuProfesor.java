@@ -8,6 +8,6 @@ package com.sistema.vistas;
  *
  * @author CompuFire
  */
-public class FrmMenuPrincipal {
+public class FrmMenuProfesor {
     
 }

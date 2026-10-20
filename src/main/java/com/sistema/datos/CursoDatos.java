@@ -60,7 +60,7 @@ public class CursoDatos {
         try (BufferedWriter bw = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, true), StandardCharsets.UTF_8))) {
 
-            String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim();
+            String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim() + "|" + curso.getIdProfesor().trim();
             bw.write(linea);
             bw.newLine();
             return true;
@@ -90,10 +90,11 @@ public class CursoDatos {
                 }
 
                 String[] datos = linea.split("\\|");
-                if (datos.length >= 2) {
+                if (datos.length >= 3) {
                     String codigo = datos[0].trim();
                     String nombre = datos[1].trim();
-                    Curso curso = new Curso(codigo, nombre);
+                    String idProfesor = datos[2].trim();
+                    Curso curso = new Curso(codigo, nombre, idProfesor);
                     cursos.add(curso);
                 }
             }
@@ -163,7 +164,7 @@ public class CursoDatos {
                 new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, false), StandardCharsets.UTF_8))) {
 
             for (Curso curso : cursos) {
-                String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim();
+                String linea = curso.getCodigoCurso().trim() + "|" + curso.getNombreCurso().trim() + "|" + curso.getIdProfesor().trim();
                 bw.write(linea);
                 bw.newLine();
             }
