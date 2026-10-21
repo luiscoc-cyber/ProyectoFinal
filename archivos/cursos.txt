@@ -1,3 +1,4 @@
 CC101|Programacion I (Avanzada)
 CC103|Algoritmos
 C001|Programación Avanzada
+MAT101|Matemática|P001
