@@ -65,14 +65,14 @@ private List<Curso> cursosDelProfesor;
 
             },
             new String [] {
-                "Código ", "Nombre"
+                "Código del curso", "Nombre del curso"
             }
         ));
         jScrollPane1.setViewportView(tablaCursos);
         tablaCursos.getAccessibleContext().setAccessibleName("");
 
         btnSeleccionar.setBackground(new java.awt.Color(153, 153, 153));
-        btnSeleccionar.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        btnSeleccionar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnSeleccionar.setForeground(new java.awt.Color(0, 0, 0));
         btnSeleccionar.setText("Seleccionar Curso");
         btnSeleccionar.addActionListener(this::btnSeleccionarActionPerformed);
@@ -94,11 +94,11 @@ private List<Curso> cursosDelProfesor;
             .addGroup(layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(btnSeleccionar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
                 .addComponent(btnCerrarSesion)
                 .addGap(61, 61, 61))
             .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
+                .addGap(170, 170, 170)
                 .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -111,9 +111,9 @@ private List<Curso> cursosDelProfesor;
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSeleccionar)
-                    .addComponent(btnCerrarSesion))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         lblBienvenida.getAccessibleContext().setAccessibleName("LblBienvenida");
@@ -130,12 +130,11 @@ if (fila == -1) {
 }
 
 Curso cursoElegido = cursosDelProfesor.get(fila);
-JOptionPane.showMessageDialog(this, "Elegiste el curso: " + cursoElegido.getNombreCurso());
 
-// Descomenta esto cuando crees la siguiente ventana:
-// FrmMenuCurso menu = new FrmMenuCurso(cursoElegido, profesorLogueado);
-// menu.setVisible(true);
-// this.dispose();        // TODO add your handling code here:
+// Abrir la siguiente ventana pasándole el curso y el profesor
+FrmMenuCurso menu = new FrmMenuCurso(cursoElegido, profesorLogueado);
+menu.setVisible(true);
+this.dispose(); // Cierra esta ventana
     }//GEN-LAST:event_btnSeleccionarActionPerformed
    // Configuracion del boton cerrar sesion 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
