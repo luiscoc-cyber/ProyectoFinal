@@ -1,1 +1,5 @@
-P002|Ana María|Martínez López
+admin|Admin|Sistema|admin123
+P001|Carlos Rodriguez|Uiz|1234
+P002|Pablo|Perez|4321
+P003|Juan|Ramirez|2468
+P004|Javier|Lopez|1357

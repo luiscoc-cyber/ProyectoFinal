@@ -1,3 +1,4 @@
-CC101|Programacion I (Avanzada)
-CC103|Algoritmos
-C001|Programación Avanzada
+MAT001|Matematicas|P001
+FIS002|Fisica I|P002
+CONT003|Contabilidad|P003
+NAT004|Ciencias Naturales|P004
