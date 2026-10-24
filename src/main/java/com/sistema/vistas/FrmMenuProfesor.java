@@ -1,27 +1,54 @@
-//Autor: Luis
 package com.sistema.vistas;
 
+import com.sistema.modelos.Curso;
 import com.sistema.modelos.Profesor;
+import com.sistema.controladores.ControladorCurso;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-
+/**
+ *
+ * @author CompuFire
+ */
 public class FrmMenuProfesor extends javax.swing.JFrame {
-    
-    private Profesor profesorLogueado;
-    
-    public  FrmMenuProfesor(Profesor profesor){
-        initComponents();
-        this.profesorLogueado = profesor;
-        this.setLocationRelativeTo(null);
-    }
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmMenuProfesor.class.getName());
 
     /**
      * Creates new form FrmMenuProfesor
      */
-    public FrmMenuProfesor() {
-        initComponents();
+private Profesor profesorLogueado;
+private ControladorCurso ctrlCurso = new ControladorCurso();
+
+public FrmMenuProfesor(Profesor profesor) {
+    initComponents();
+    this.setLocationRelativeTo(null);
+    this.profesorLogueado = profesor;
+    
+    // Mostrar el nombre en el Label
+    lblBienvenida.setText("Bienvenido, " + profesor.getNombre());
+    
+    // Cargar los cursos en la tabla
+    cargarCursos();
     }
+
+private void cargarCursos() {
+    DefaultTableModel modelo = new DefaultTableModel(null, new String[]{"Código", "Nombre"}) {
+        @Override
+        public boolean isCellEditable(int row, int column) { return false; }
+    };
+    
+    List<Curso> cursos = ctrlCurso.listarCursos();
+    for (Curso c : cursos) {
+        // Solo mostramos los cursos que le pertenecen a este profesor
+        if (c.getIdProfesor().equalsIgnoreCase(profesorLogueado.getIdProfesor())) {
+            Object[] fila = { c.getCodigoCurso(), c.getNombreCurso() };
+            modelo.addRow(fila);
+        }
+    }
+    tblCursos.setModel(modelo);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,47 +59,119 @@ public class FrmMenuProfesor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblBienvenida = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCursos = new javax.swing.JTable();
+        btnSeleccionarCurso = new javax.swing.JButton();
+        btnCerrarSesion = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblBienvenida.setText("Bienvenido,");
+
+        tblCursos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Código", "Nombre"
+            }
+        ));
+        jScrollPane1.setViewportView(tblCursos);
+
+        btnSeleccionarCurso.setText("Seleccionar Curso");
+        btnSeleccionarCurso.addActionListener(this::btnSeleccionarCursoActionPerformed);
+
+        btnCerrarSesion.setText("Cerrar Sesion");
+        btnCerrarSesion.addActionListener(this::btnCerrarSesionActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(btnSeleccionarCurso)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSeleccionarCurso, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnSeleccionarCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarCursoActionPerformed
+        // TODO add your handling code here:                                                    
+    int fila = tblCursos.getSelectedRow();
+    if (fila < 0) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un curso de la tabla.");
+        return;
+    }
+    
+    String codigo = tblCursos.getValueAt(fila, 0).toString();
+    String nombre = tblCursos.getValueAt(fila, 1).toString();
+    
+    // Creamos el objeto curso con el ID del profesor
+    Curso cursoSeleccionado = new Curso(codigo, nombre, profesorLogueado.getIdProfesor());
+    
+    // Abrimos la ventana del menú del curso
+    FrmMenuCurso menuCurso = new FrmMenuCurso(cursoSeleccionado, profesorLogueado);
+    menuCurso.setVisible(true);
+    this.dispose();
+    }//GEN-LAST:event_btnSeleccionarCursoActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        // TODO add your handling code here:                                                
+  int confirmacion = JOptionPane.showConfirmDialog(this, 
+                "¿Está seguro de que desea cerrar sesión?", 
+                "Cerrar Sesión", 
+                JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // 1. Instanciar la ventana de Login nuevamente
+            FrmLogin login = new FrmLogin();
+            login.setLocationRelativeTo(null); // Centrarla
+            login.setVisible(true);
+            
+            // 2. Cerrar y destruir la ventana actual del administrador
+            this.dispose(); 
+        }
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmMenuProfesor().setVisible(true));
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JButton btnSeleccionarCurso;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBienvenida;
+    private javax.swing.JTable tblCursos;
     // End of variables declaration//GEN-END:variables
 }

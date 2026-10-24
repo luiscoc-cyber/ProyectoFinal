@@ -1,4 +1,2 @@
-MAT001|Matematicas|P001
-FIS002|Fisica I|P002
-CONT003|Contabilidad|P003
-NAT004|Ciencias Naturales|P004
+MAT001|Matematica|P001
+FIS001|Fisica|P002
