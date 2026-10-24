@@ -1,1 +1,4 @@
-P002|Ana María|Martínez López
+admin|Admin|Sistema|admin123
+
+P001|Antonio|Ramirez|ramirez123
+P002|Jorge|Shoc|jorge123

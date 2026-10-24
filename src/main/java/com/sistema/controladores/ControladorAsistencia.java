@@ -7,6 +7,7 @@ package com.sistema.controladores;
 import com.sistema.datos.AsistenciaDatos;
 import com.sistema.modelos.Asistencia;
 import java.util.List;
+
 /**
  *
  * @author CompuFire
@@ -24,46 +25,69 @@ public class ControladorAsistencia {
         this.controladorEstudiante = new ControladorEstudiante();
     }
 
-    // 1. Registrar nueva asistencia validando la existencia del estudiante y del curso
-    public boolean registrarAsistencia(String idAsistencia, String carnet, String codigoCurso, String fecha, String estado) {
-        // Validación de campos nulos o vacíos
-        if (idAsistencia == null || idAsistencia.trim().isEmpty() ||
-            carnet == null || carnet.trim().isEmpty() ||
-            codigoCurso == null || codigoCurso.trim().isEmpty() ||
-            fecha == null || fecha.trim().isEmpty() ||
-            estado == null || estado.trim().isEmpty()) {
-            System.out.println("[ControladorAsistencia] Todos los campos son obligatorios para poder guardar ");
-            return false;
-        }
+  // 1. Registrar nueva asistencia validando la existencia del estudiante y del curso
+public boolean registrarAsistencia(String idAsistencia, String carnet, String codigoCurso, String fecha, String estado) {
+    // Validación de campos nulos o vacíos
+    if (idAsistencia == null || idAsistencia.trim().isEmpty() ||
+        carnet == null || carnet.trim().isEmpty() ||
+        codigoCurso == null || codigoCurso.trim().isEmpty() ||
+        fecha == null || fecha.trim().isEmpty() ||
+        estado == null || estado.trim().isEmpty()) {
         
-          // Validación de duplicados por ID de asistencia
-        if (buscarAsistencia(idAsistencia) != null) {
-            System.err.println("[ControladorAsistencia] Ya existe una asistencia con el ID " + idAsistencia);
-            return false;
-        }
-
-        // Validacion de que el estudiante si existe 
-        if (controladorEstudiante.buscarEstudiante(carnet.trim()) == null) {
-            System.err.println("[ControladorAsistencia] Error: El carné " + carnet + " no existe.");
-            return false;
-        }
-
-        // Validacion de que el curso si existe
-        if (controladorCurso.buscarCurso(codigoCurso.trim()) == null) {
-            System.err.println("[ControladorAsistencia] Error: El curso " + codigoCurso + " no existe.");
-            return false;
-        }
-
-        Asistencia nueva = new Asistencia(
-            idAsistencia.trim(),
-            carnet.trim(),
-            codigoCurso.trim(),
-            fecha.trim(),
-            estado.trim()
-        );
-
-        return asistenciaDatos.guardar(nueva);
+        System.err.println("[ControladorAsistencia] Todos los campos son obligatorios para poder guardar.");
+        return false;
     }
+    
+    // Validación de duplicados por ID de asistencia
+    if (buscarAsistencia(idAsistencia) != null) {
+        System.err.println("[ControladorAsistencia] Ya existe una asistencia con el ID " + idAsistencia);
+        return false;
+    }
+
+    // Validación de que el estudiante sí existe 
+    if (controladorEstudiante.buscarEstudiante(carnet.trim()) == null) {
+        System.err.println("[ControladorAsistencia] Error: El carné " + carnet + " no existe.");
+        return false;
+    }
+
+    // Validación de que el curso sí existe
+    if (controladorCurso.buscarCurso(codigoCurso.trim()) == null) {
+        System.err.println("[ControladorAsistencia] Error: El curso " + codigoCurso + " no existe.");
+        return false;
+    }
+
+    // Validacion para evitar duplicados en estudiantes, cursos y fechas
+    java.util.List<Asistencia> asistenciasExistentes = asistenciaDatos.obtenerTodos();
+    for (Asistencia a : asistenciasExistentes) {
+        if (a.getCarnetEstudiante().trim().equalsIgnoreCase(carnet.trim()) && 
+            a.getCodigoCurso().trim().equalsIgnoreCase(codigoCurso.trim()) && 
+            a.getFecha().trim().equals(fecha.trim())) {
+            
+            System.err.println("[ControladorAsistencia] Error: Ya se registró asistencia para el estudiante " 
+                    + carnet + " en la fecha " + fecha + " para este curso.");
+            return false; // Bloquea el guardado
+        }
+    }
+    // -----------------------------------------------------------------------------------
+
+    Asistencia nueva = new Asistencia(
+        idAsistencia.trim(),
+        carnet.trim(),
+        codigoCurso.trim(),
+        fecha.trim(),
+        estado.trim()
+    );
+
+    boolean guardado = asistenciaDatos.guardar(nueva);
+    
+    if (guardado) {
+        System.out.println("[ControladorAsistencia] Asistencia registrada exitosamente.");
+    } else {
+        System.err.println("[ControladorAsistencia] Error inesperado al intentar guardar la asistencia.");
+    }
+
+    return guardado;
+}
 
     // 2. Listado de todas las asistencias
     public List<Asistencia> listarAsistencias() {

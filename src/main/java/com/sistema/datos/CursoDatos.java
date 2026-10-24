@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.sistema.datos;
 
 import com.sistema.modelos.Curso;
@@ -17,10 +14,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Angel
+ */
+//La clase se encarga del guardado y la lectura de los cursos
+//Utilza un archivo .txt como base de datos
 public class CursoDatos {
-
+//Ruta del archivo donde se guardan los cursos 
     private static final String RUTA_ARCHIVO = "archivos/cursos.txt";
-
+//Constructor que inicializa la clase y verica que el archivo exista 
     public CursoDatos() {
         crearArchivoSiNoExiste();
     }
@@ -50,7 +52,7 @@ public class CursoDatos {
             System.err.println("[CursoDatos] El curso y sus atributos no pueden ser nulos.");
             return false;
         }
-
+//Valida que no exista un curso con el mismo codigo 
         if (buscarPorCodigo(curso.getCodigoCurso()) != null) {
             System.err.println("[CursoDatos] Ya existe un curso con el código " + curso.getCodigoCurso());
             return false;
@@ -71,6 +73,7 @@ public class CursoDatos {
     }
 
     // Obtener todos
+    //Lee el archivo de texto y devuelve una lista con los cursos registrados
     public List<Curso> obtenerTodos() {
         List<Curso> cursos = new ArrayList<>();
         File archivo = new File(RUTA_ARCHIVO);
@@ -88,7 +91,7 @@ public class CursoDatos {
                 if (linea.trim().isEmpty()) {
                     continue;
                 }
-
+ //Separa los datos con " | " 
                 String[] datos = linea.split("\\|");
                 if (datos.length >= 3) {
                     String codigo = datos[0].trim();
@@ -140,7 +143,7 @@ public class CursoDatos {
             return false;
         }
 
-        return guardarTodos(cursos);
+        return guardarTodos(cursos); //Reescribe el archivo con la lista actualizada
     }
 
     // Eliminar curso
@@ -149,6 +152,7 @@ public class CursoDatos {
             return false;
         }
         List<Curso> cursos = obtenerTodos();
+        // Utilizamos el removeif para elimimar un curso si el codigo coicide 
         boolean eliminado = cursos.removeIf(c -> c.getCodigoCurso().trim().equalsIgnoreCase(codigoCurso.trim()));
 
         if (!eliminado) {
@@ -159,8 +163,10 @@ public class CursoDatos {
     }
 
     // Método auxiliar para sobreescribir el archivo con UTF-8
+    //Se usa despues de actualizar o eliminar curso
     private boolean guardarTodos(List<Curso> cursos) {
         try (BufferedWriter bw = new BufferedWriter(
+                //El parametro false indica que se sobreescriba el archivo desde cero
                 new OutputStreamWriter(new FileOutputStream(RUTA_ARCHIVO, false), StandardCharsets.UTF_8))) {
 
             for (Curso curso : cursos) {
